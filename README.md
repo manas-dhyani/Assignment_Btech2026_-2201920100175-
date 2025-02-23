@@ -1,87 +1,51 @@
 # Assignment_Btech2026_-2201920100175-
-OBJECT ORIENTED PROGRAMMING
-CODING PLATFORM HACKKERRANK 
+DATA STRUCTURE AND ALGORITHM
+### Problem Statement:
+Given a string str of lowercase alphabets and a number k, the task is to print the minimum value of the string after removal of k characters.
+The value of a string is defined as the sum of squares of the count of each distinct character present in the string.
+Return the minimum possible required value.
 
-QUESTION:-
+Examples:
+Input: str = "abcec", k = 1
+Output: 6
 
+Input: str = "aabcbcbcabcc", k = 3
+Output: 27
 
-Using inheritance, one class can acquire the properties of others. Consider the following Animal class:
+Expected Time Complexity: O(n + k log(p))
+Note: Here, n is the length of the string, and p is the number of distinct alphabets, while k is the number of alphabets to be removed.
 
-class Animal{
-    void walk(){
-        System.out.println("I am walking");
-    }
-}
-This class has only one method, walk. Next, we want to create a Bird class that also has a fly method. We do this using extends keyword:
-
-class Bird extends Animal {
-    void fly() {
-        System.out.println("I am flying");
-    }
-}
-Finally, we can create a Bird object that can both fly and walk.
-
-public class Solution{
-   public static void main(String[] args){
-
-      Bird bird = new Bird();
-      bird.walk();
-      bird.fly();
-   }
-}
-The above code will print:
-
-I am walking
-I am flying
-This means that a Bird object has all the properties that an Animal object has, as well as some additional unique properties.
-
-The code above is provided for you in your editor. You must add a sing method to the Bird class, then modify the main method accordingly so that the code prints the following lines:
-
-I am walking
-I am flying
-I am singing
-
-
-
-ANSWER :-
-
-import java.io.*;
+### Solution
+```
 import java.util.*;
-import java.text.*;
-import java.math.*;
-import java.util.regex.*;
 
-class Animal{
-	void walk()
-	{
-		System.out.println("I am walking");
-	}
-}
-class Bird extends Animal
-{
-	void fly()
-	{
-		System.out.println("I am flying");
-	}
-    void walk()
-    {
-        System.out.println("I am walking");
+public class MinStringValue {
+    public static int minStringValue(String s, int k) {
+        Map<Character, Integer> freq = new HashMap<>();
+        for (char c : s.toCharArray()) freq.put(c, freq.getOrDefault(c, 0) + 1);
+
+        List<Integer> counts = new ArrayList<>(freq.values());
+        counts.sort(Collections.reverseOrder());
+
+        int i = 0;
+        while (k > 0) {
+            if (counts.get(i) > 0) {
+                counts.set(i, counts.get(i) - 1);
+                k--;
+            }
+            if (i < counts.size() - 1 && counts.get(i) < counts.get(i + 1)) i++;
+            else i = 0;
+        }
+
+        int result = 0;
+        for (int count : counts) result += count * count;
+        return result;
     }
-    void sing()
-    {
-        System.out.println("I am singing");
+
+    public static void main(String[] args) {
+        String s = "aabcbcbcabcc";
+        int k = 3;
+        System.out.println(minStringValue(s, k));
     }
 }
-
-public class Solution{
-
-   public static void main(String args[]){
-
-	  Bird bird = new Bird();
-	  bird.walk();
-	  bird.fly();
-      bird.sing();
-	
-   }
-}
-
+```
